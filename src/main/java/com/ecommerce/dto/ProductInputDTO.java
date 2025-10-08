@@ -3,6 +3,15 @@ package com.ecommerce.dto;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
+// record imutável para representar dados, gera getters, setters ... automaticamente
+// DTO de entrada
+/*
+    Dados:
+        name: obrigatório
+        descripition: opcional
+        price: obrigatório maior ou igual a zero
+        stock: obrigatório maior ou igual a zero
+ */
 public record ProductInputDTO(
         @NotBlank(message = "name is required") String name,
         String description,
