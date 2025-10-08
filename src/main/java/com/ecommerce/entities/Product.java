@@ -14,24 +14,24 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "products")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Entity // Indica uma classe sendo entidade JPA
+@Table(name = "products") // define o nome da tabela no banco de dados
+@Data // gera getters, setters, toString, equals e hashCode
+@AllArgsConstructor // cria construtor com todos os campos
+@NoArgsConstructor // construtor vazio
+@Builder //permite criar objetos
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // define como chave primaria no bd
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // valor do id gerado automaticamente, auto-incremento
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // coluna obrigatória, não aceita nulo
     private String name;
 
     private String description;
 
-    @Column(nullable = false, precision = 19, scale = 2)
+    @Column(nullable = false, precision = 19, scale = 2) // coluna obrigatória, coom 2 casas decimais e 19 digitos
     private BigDecimal price;
 
     private Integer stock;
