@@ -36,5 +36,7 @@ public class Product {
 
     private Integer stock;
 
+    private boolean active = true;
+
 
 }

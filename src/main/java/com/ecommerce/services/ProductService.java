@@ -27,13 +27,16 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductOutputDTO> list(String q, Pageable pageable) {
         Page<Product> page;
+
         if (q == null || q.isBlank()) {
-            page = productRepository.findAll(pageable);
+            page = productRepository.findByActiveTrue(pageable); // ✅ só ativos
         } else {
-            page = productRepository.findByNameContainingIgnoreCase(q, pageable);
+            page = productRepository.findByNameContainingIgnoreCaseAndActiveTrue(q, pageable);
         }
+
         return page.map(productMapper::toDTO);
     }
+
     //cria um novo produto, rollback em caso de erro
     @Transactional
     public ProductOutputDTO create(ProductInputDTO dto) {
@@ -60,9 +63,11 @@ public class ProductService {
     //exclui um produto por ID
     @Transactional
     public void delete(Long id) {
-        if (!productRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Product not found with id " + id);
-        }
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+
+        product.setActive(false); // ✅ marca como inativo
+        productRepository.save(product);
     }
+
 }
