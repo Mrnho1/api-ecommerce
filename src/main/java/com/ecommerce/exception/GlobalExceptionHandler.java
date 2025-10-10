@@ -1,32 +1,31 @@
 package com.ecommerce.exception;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.validation.FieldError;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@ControllerAdvice // transforma a classe em um interceptor global de exceções
 public class GlobalExceptionHandler {
 
+    // representa um recurso não encontrado no banco de dados
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String,String>> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
-
+    // intercepta qualquer exceção não tratada
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String,String>> handleGeneric(Exception ex) {
         ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Internal server error"));
     }
-
+    // captura erros de validação dos DTOs
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -42,5 +41,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    // opcional: trate outros erros específicos conforme for evoluindo
+
 }
