@@ -12,11 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
 import java.net.URI;
 
-@RestController
-@RequestMapping("/api/products")
-@Validated
+@RestController // retorna json ou outro body
+@RequestMapping("/api/products") // caminho base para todos os endpoints
+@Validated // ativa suporte para validação
 public class ProductController {
-
+    // Injeção via construtor
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
